@@ -28,7 +28,7 @@ local function set_groups()
   local groups = {
     -- Base
     Normal = { fg = colors.fg, bg = colors.bg },
-    NormalFloat = { bg = colors.bg },
+    NormalFloat = { bg = colors.float_bg },
     ColorColumn = { bg = colors.line },
     CursorColumn = { bg = colors.line },
     CursorLine = { bg = colors.line },
@@ -38,6 +38,7 @@ local function set_groups()
     Directory = { fg = colors.func },
     ErrorMsg = { fg = colors.white, bg = colors.error, style = 'standout' },
     VertSplit = { fg = colors.panel_border, bg = colors.bg },
+    FloatBorder = { fg = colors.float_bg },
     Folded = { fg = colors.fg_idle, bg = colors.panel_bg },
     FoldColumn = { bg = colors.bg },
     SignColumn = { bg = colors.bg },
@@ -100,11 +101,11 @@ local function set_groups()
     DiagnosticInfo = { fg = colors.tag },
     DiagnosticHint = { fg = colors.regexp },
 
-    DiagnosticUnderlineError = { sp = colors.error, style = 'undercurl' },
-    DiagnosticUnderlineWarn = { sp = colors.keyword, style = 'undercurl' },
-    DiagnosticUnderlineInfo = { sp = colors.tag, style = 'undercurl' },
-    DiagnosticUnderlineHint = { sp = colors.regexp, style = 'undercurl' },
-
+    DiagnosticUnderlineError = { sp = colors.error, style = 'underline' },
+    DiagnosticUnderlineWarn = { sp = colors.keyword, style = 'underline' },
+    DiagnosticUnderlineInfo = { sp = colors.tag, style = 'underline' },
+    DiagnosticUnderlineHint = { sp = colors.regexp, style = 'underline' },
+      
     -- Markdown
     markdownCode = { fg = colors.special },
 
