@@ -19,7 +19,7 @@ function colors.generate(mirage)
       colors.markup = '#F28779'
       colors.keyword = '#FFA759'
       colors.special = '#FFE6B3'
-      colors.comment = '#5C6773'
+      colors.comment = '#bf8167' -- '#5C6773'
       colors.constant = '#D4BFFF'
       colors.operator = '#F29E74'
       colors.error = '#FF3333'
@@ -47,6 +47,7 @@ function colors.generate(mirage)
 
       colors.fg_idle = '#607080'
       colors.warning = '#FFA759'
+      colors.float_bg = '#2D323F'
     else
       colors.accent = '#E6B450'
       colors.bg = '#0A0E14'
@@ -89,6 +90,7 @@ function colors.generate(mirage)
 
       colors.fg_idle = '#3E4B59'
       colors.warning = '#FF8F40'
+      colors.float_bg = '#161e26'
     end
   else
     colors.accent = '#FF9940'
@@ -132,6 +134,7 @@ function colors.generate(mirage)
 
     colors.fg_idle = '#828C99'
     colors.warning = '#FA8D3E'
+    colors.float_bg = '#d8d8d8'
   end
 end
 
