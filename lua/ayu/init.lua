@@ -38,7 +38,7 @@ local function set_groups()
     Directory = { fg = colors.func },
     ErrorMsg = { fg = colors.white, bg = colors.error, style = 'standout' },
     VertSplit = { fg = colors.panel_border, bg = colors.bg },
-    FloatBorder = { fg = colors.float_bg },
+    FloatBorder = { bg = colors.float_bg },
     Folded = { fg = colors.fg_idle, bg = colors.panel_bg },
     FoldColumn = { bg = colors.bg },
     SignColumn = { bg = colors.bg },
