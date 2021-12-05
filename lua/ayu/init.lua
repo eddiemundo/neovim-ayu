@@ -97,6 +97,8 @@ local function set_groups()
 
     -- LSP
     LspReferenceText = { bg = colors.selection_bg },
+    LspReferenceRead = { bg = colors.selection_bg },
+    LspReferenceWrite = { bg = colors.selection_bg },
       
     DiagnosticError = { fg = colors.error },
     DiagnosticWarn = { fg = colors.keyword },
