@@ -1,8 +1,8 @@
 local colors = require('ayu.colors')
-local utils = require('ayu.utils')
 local config = require('ayu.config')
 local ayu = {}
 
+--- Apply terminal highlighting.
 local function set_terminal_colors()
   vim.g.terminal_color_0 = colors.bg
   vim.g.terminal_color_1 = colors.markup
@@ -24,12 +24,17 @@ local function set_terminal_colors()
   vim.g.terminal_color_foreground = colors.fg
 end
 
+--- Apply groups highlighting.
 local function set_groups()
   local groups = {
-    -- Base
+    -- Base.
     Normal = { fg = colors.fg, bg = colors.bg },
     NormalFloat = { bg = colors.float_bg },
+    -- NormalFloat = { bg = colors.bg },
+    FloatBorder = { fg = colors.comment },
+    FloatTitle = { fg = colors.fg },
     ColorColumn = { bg = colors.line },
+    Cursor = { fg = colors.bg, bg = colors.fg },
     CursorColumn = { bg = colors.line },
     CursorLine = { bg = colors.line },
     CursorLineNr = { fg = colors.accent, bg = colors.line },
@@ -37,26 +42,30 @@ local function set_groups()
 
     Directory = { fg = colors.func },
     ErrorMsg = { fg = colors.white, bg = colors.error, style = 'standout' },
-    VertSplit = { fg = colors.panel_border, bg = colors.bg },
-    FloatBorder = { bg = colors.float_bg },
+    -- VertSplit = { fg = colors.panel_border, bg = colors.bg },
+    -- FloatBorder = { bg = colors.float_bg },
+    -- ErrorMsg = { fg = colors.error },
+    WinSeparator = { fg = colors.panel_border, bg = colors.bg },
+    VertSplit = { link = 'WinSeparator' },
     Folded = { fg = colors.fg_idle, bg = colors.panel_bg },
     FoldColumn = { bg = colors.bg },
     SignColumn = { bg = colors.bg },
 
-    MatchParen = { sp = colors.func, style = 'underline' },
+    MatchParen = { sp = colors.func, underline = true },
     ModeMsg = { fg = colors.string },
     MoreMsg = { fg = colors.string },
     NonText = { fg = colors.guide_normal },
     Pmenu = { fg = colors.fg, bg = colors.selection_inactive },
-    PmenuSel = { fg = colors.fg, bg = colors.selection_inactive, style = 'reverse' },
+    PmenuSel = { fg = colors.fg, bg = colors.selection_inactive, reverse = true },
     Question = { fg = colors.string },
     Search = { fg = colors.bg, bg = colors.constant },
+    CurSearch = { fg = colors.bg, bg = colors.special },
     IncSearch = { fg = colors.keyword, bg = colors.selection_inactive },
     SpecialKey = { fg = colors.selection_inactive },
-    SpellCap = { sp = colors.tag, style = 'undercurl' },
-    SpellLocal = { sp = colors.keyword, style = 'undercurl' },
-    SpellBad = { sp = colors.error, style = 'undercurl' },
-    SpellRare = { sp = colors.regexp, style = 'undercurl' },
+    SpellCap = { sp = colors.tag, undercurl = true },
+    SpellLocal = { sp = colors.keyword, undercurl = true },
+    SpellBad = { sp = colors.error, undercurl = true },
+    SpellRare = { sp = colors.regexp, undercurl = true },
     StatusLine = { fg = colors.fg, bg = colors.panel_bg },
     StatusLineNC = { fg = colors.fg_idle, bg = colors.panel_bg },
     WildMenu = { fg = colors.fg, bg = colors.markup },
@@ -67,7 +76,7 @@ local function set_groups()
     Visual = { bg = colors.selection_inactive },
     WarningMsg = { fg = colors.warning },
 
-    Comment = { fg = colors.comment },
+    Comment = { fg = colors.comment, italic = true },
     Constant = { fg = colors.constant },
     String = { fg = colors.string },
     Identifier = { fg = colors.entity },
@@ -80,55 +89,87 @@ local function set_groups()
     Structure = { fg = colors.special },
     Special = { fg = colors.accent },
     Delimiter = { fg = colors.special },
-    Underlined = { fg = colors.tag, style = 'underline' },
+    Underlined = { sp = colors.tag, underline = true },
     Ignore = { fg = colors.fg },
     Error = { fg = colors.white, bg = colors.error },
     Todo = { fg = colors.markup },
     qfLineNr = { fg = colors.keyword },
+    qfError = { fg = colors.error },
     Conceal = { fg = colors.comment },
     CursorLineConceal = { fg = colors.guide_normal, bg = colors.line },
 
+    Added = { fg = colors.vcs_added },
+    Removed = { fg = colors.vcs_removed },
+    Changed = { fg = colors.vcs_modified },
     DiffAdd = { bg = colors.vcs_added_bg },
     DiffAdded = { fg = colors.vcs_added },
-    DiffChange = { bg = colors.vcs_modified_bg },
     DiffDelete = { bg = colors.vcs_removed_bg },
     DiffRemoved = { fg = colors.vcs_removed },
-    DiffText = { bg = colors.vcs_diff_text },
+    DiffText = { bg = colors.gutter_normal },
+    DiffChange = { bg = colors.selection_inactive },
 
     -- LSP
     LspReferenceText = { bg = colors.selection_bg },
     LspReferenceRead = { bg = colors.selection_bg },
     LspReferenceWrite = { bg = colors.selection_bg },
     LspCodeLens = { fg = colors.fg_idle },
-      
+
     DiagnosticError = { fg = colors.error },
     DiagnosticWarn = { fg = colors.keyword },
     DiagnosticInfo = { fg = colors.tag },
     DiagnosticHint = { fg = colors.regexp },
 
-    DiagnosticUnderlineError = { sp = colors.error, style = 'underline' },
-    DiagnosticUnderlineWarn = { sp = colors.keyword, style = 'underline' },
-    DiagnosticUnderlineInfo = { sp = colors.tag, style = 'underline' },
-    DiagnosticUnderlineHint = { sp = colors.regexp, style = 'underline' },
+    -- DiagnosticUnderlineError = { sp = colors.error, style = 'underline' },
+    -- DiagnosticUnderlineWarn = { sp = colors.keyword, style = 'underline' },
+    -- DiagnosticUnderlineInfo = { sp = colors.tag, style = 'underline' },
+    -- DiagnosticUnderlineHint = { sp = colors.regexp, style = 'underline' },
       
-    -- Markdown
+    DiagnosticUnderlineError = { sp = colors.error, undercurl = true },
+    DiagnosticUnderlineWarn = { sp = colors.keyword, undercurl = true },
+    DiagnosticUnderlineInfo = { sp = colors.tag, undercurl = true },
+    DiagnosticUnderlineHint = { sp = colors.regexp, undercurl = true },
+
+    -- Markdown.
     markdownCode = { fg = colors.special },
 
-    -- TreeSitter
-    TSProperty = { fg = colors.tag },
-    TSField = { fg = colors.tag },
-    TSParameter = { fg = colors.fg },
-    TSUnderline = { sp = colors.tag, style = 'underline' },
+    -- TreeSitter.
+    ['@property'] = { fg = colors.tag },
+    ['@tag'] = { fg = colors.keyword },
+    ['@tag.attribute'] = { fg = colors.entity },
+    ['@tag.delimiter'] = { link = 'Delimiter' },
+    ['@type.qualifier'] = { fg = colors.keyword },
+    ['@variable'] = { fg = colors.fg },
+    ['@variable.builtin'] = { fg = colors.func },
+    ['@variable.member'] = { fg = colors.tag },
+    ['@variable.parameter'] = { fg = colors.fg },
+    ['@module'] = { fg = colors.func },
+    ['@markup.heading'] = { fg = colors.keyword },
+    ['@keyword.storage'] = { fg = colors.keyword },
 
-    -- Gitsigns
-    GitSignsAdd = { fg = colors.vcs_added },
-    GitSignsChange = { fg = colors.vcs_modified },
-    GitSignsDelete = { fg = colors.vcs_removed },
+    ['@lsp.type.namespace'] = { link = '@module' },
+    ['@lsp.type.type'] = { link = '@type' },
+    ['@lsp.type.class'] = { link = '@type' },
+    ['@lsp.type.enum'] = { link = '@type' },
+    ['@lsp.type.interface'] = { link = '@type' },
+    ['@lsp.type.struct'] = { link = '@variable.member' },
+    ['@lsp.type.parameter'] = { fg = colors.lsp_parameter },
+    ['@lsp.type.field'] = { link = '@variable.member' },
+    ['@lsp.type.variable'] = { link = '@variable' },
+    ['@lsp.type.property'] = { link = '@property' },
+    ['@lsp.type.enumMember'] = { link = '@constant' },
+    ['@lsp.type.function'] = { link = '@function' },
+    ['@lsp.type.method'] = { link = '@function.method' },
+    ['@lsp.type.macro'] = { link = '@function.macro' },
+    ['@lsp.type.decorator'] = { link = '@function' },
+    ['@lsp.mod.constant'] = { link = '@constant' },
 
-    -- Telescope
+    -- TreesitterContext.
+    TreesitterContext = { bg = colors.selection_inactive },
+
+    -- Telescope.
     TelescopePromptBorder = { fg = colors.accent },
 
-    -- Cmp
+    -- Cmp.
     CmpItemAbbrMatch = { fg = colors.keyword },
     CmpItemAbbrMatchFuzzy = { fg = colors.func },
     CmpItemKindText = { fg = colors.string },
@@ -156,13 +197,18 @@ local function set_groups()
     CmpItemKindEvent = { fg = colors.tag },
     CmpItemKindOperator = { fg = colors.operator },
     CmpItemKindTypeParameter = { fg = colors.tag },
+    CmpItemMenu = { fg = colors.comment },
 
-    -- Word under cursor
+    -- Word under cursor.
     CursorWord = { bg = colors.selection_inactive },
     CursorWord0 = { bg = colors.selection_inactive },
     CursorWord1 = { bg = colors.selection_inactive },
 
-    -- NvimTree
+    -- Noice
+    NoiceLspProgressTitle = { fg = colors.fg },
+    NoiceLspProgressClient = { fg = colors.special },
+
+    -- NvimTree.
     NvimTreeGitDirty = { fg = colors.accent },
     NvimTreeGitStaged = { fg = colors.vcs_modified },
     NvimTreeGitMerge = { fg = colors.error },
@@ -177,28 +223,40 @@ local function set_groups()
     NvimTreeExecFile = { fg = colors.fg },
     NvimTreeIndentMarker = { fg = colors.guide_normal },
 
-    NvimTreeWindowPicker = { fg = colors.keyword, bg = colors.panel_border, style = 'bold' },
+    NvimTreeWindowPicker = { fg = colors.keyword, bg = colors.panel_border, bold = true },
 
-    -- WhichKey
+    -- Neo-tree.
+    NeoTreeRootName = { fg = colors.fg, bold = true },
+
+    -- WhichKey.
     WhichKeyFloat = { bg = colors.bg },
 
-    -- Neogit
+    -- Indent blankline.
+    IndentBlanklineContextChar = { fg = colors.comment },
+
+    -- Neogit.
     NeogitDiffContextHighlight = { bg = colors.line },
     NeogitHunkHeader = { fg = colors.tag },
     NeogitHunkHeaderHighlight = { fg = colors.tag, bg = colors.line },
     NeogitDiffAddHighlight = { bg = colors.vcs_added_bg },
     NeogitDiffDeleteHighlight = { bg = colors.vcs_removed_bg },
 
-    -- Hop
-    HopNextKey = { fg = colors.keyword, style = 'bold,underline' },
-    HopNextKey1 = { fg = colors.entity, style = 'bold,underline' },
+    -- Hop.
+    HopNextKey = { fg = colors.keyword, bold = true, underline = true },
+    HopNextKey1 = { fg = colors.entity, bold = true, underline = true },
     HopNextKey2 = { fg = colors.tag },
     HopUnmatched = { fg = colors.comment },
 
-    -- LSP Signature
-    LspSignatureActiveParameter = { bg = 'italic' },
+    -- Leap.
+    LeapMatch = { fg = colors.regexp, underline = true },
+    LeapLabelPrimary = { fg = colors.bg, bg = colors.regexp },
+    LeapLabelSecondary = { fg = colors.bg, bg = colors.entity },
+    LeapLabelSelected = { fg = colors.bg, bg = colors.tag },
 
-    -- Notify
+    -- LSP Signature.
+    LspSignatureActiveParameter = { italic = true },
+
+    -- Notify.
     NotifyERROR = { fg = colors.vcs_removed },
     NotifyWARN = { fg = colors.func },
     NotifyINFO = { fg = colors.vcs_added },
@@ -210,10 +268,10 @@ local function set_groups()
     NotifyDEBUGTitle = { fg = colors.ui },
     NotifyTRACETitle = { fg = colors.entity },
 
-    -- Dap
+    -- Dap.
     NvimDapVirtualText = { fg = colors.regexp },
 
-    -- DAP UI
+    -- DAP UI.
     DapUIScope = { fg = colors.func },
     DapUIType = { fg = colors.entity },
     DapUIDecoration = { fg = colors.tag },
@@ -227,27 +285,33 @@ local function set_groups()
     DapUIWatchesError = { fg = colors.error },
     DapUIBreakpointsPath = { fg = colors.regexp },
     DapUIBreakpointsInfo = { fg = colors.constant },
-    DapUIBreakpointsCurrentLine = { fg = colors.constant, style = 'bold' },
+    DapUIBreakpointsCurrentLine = { fg = colors.constant, bold = true },
 
-    -- Visual Multi
+    -- Visual Multi.
     VM_Extend = { bg = colors.selection_inactive },
-    VM_Cursor = { bg = colors.selection_inactive, sp = colors.fg, style = 'underline' },
-    VM_Insert = { sp = colors.fg, style = 'underline' },
+    VM_Cursor = { bg = colors.selection_inactive, sp = colors.fg, underline = true },
+    VM_Insert = { sp = colors.fg, underline = true },
     VM_Mono = { fg = colors.bg, bg = colors.comment },
   }
 
-  groups = vim.tbl_extend('force', groups, config.overrides)
+  groups = vim.tbl_extend('force', groups, type(config.overrides) == 'function' and config.overrides() or config.overrides)
 
   for group, parameters in pairs(groups) do
-    utils.highlight(group, parameters)
+    vim.api.nvim_set_hl(0, group, parameters)
   end
 end
 
-function ayu.setup(values)
-  setmetatable(config, { __index = vim.tbl_extend('force', config.defaults, values) })
-end
+--- Apply user settings.
+---@param values table
+function ayu.setup(values) setmetatable(config, { __index = vim.tbl_extend('force', config.defaults, values) }) end
 
+--- Set the colorscheme.
 function ayu.colorscheme()
+  if vim.version().minor < 8 then
+    vim.notify('Neovim 0.8+ is required for ayu colorscheme', vim.log.levels.ERROR, { title = 'Ayu colorscheme' })
+    return
+  end
+
   vim.api.nvim_command('hi clear')
   if vim.fn.exists('syntax_on') then
     vim.api.nvim_command('syntax reset')
@@ -258,7 +322,9 @@ function ayu.colorscheme()
   vim.g.colors_name = 'ayu'
 
   colors.generate(config.mirage)
-  set_terminal_colors()
+  if config.terminal then
+    set_terminal_colors()
+  end
   set_groups()
 end
 

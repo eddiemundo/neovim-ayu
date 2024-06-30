@@ -3,6 +3,8 @@ local colors = {
   black = '#000000',
 }
 
+--- Generate colors based `vim.o.background` and a variant.
+---@param mirage boolean: Wheter to use `mirage` variant when `vim.o.background` is dark.
 function colors.generate(mirage)
   if vim.o.background == 'dark' then
     if mirage then
@@ -23,6 +25,7 @@ function colors.generate(mirage)
       colors.constant = '#D4BFFF'
       colors.operator = '#F29E74'
       colors.error = '#FF3333'
+      colors.lsp_parameter = '#D3B8F9'
 
       colors.line = '#191E2A'
       colors.panel_bg = '#232834'
@@ -41,9 +44,7 @@ function colors.generate(mirage)
       colors.vcs_removed = '#F27983'
 
       colors.vcs_added_bg = '#313D37'
-      colors.vcs_modified_bg = '#323A4C'
       colors.vcs_removed_bg = '#3E373A'
-      colors.vcs_diff_text = '#465742'
 
       colors.fg_idle = '#607080'
       colors.warning = '#FFA759'
@@ -66,6 +67,7 @@ function colors.generate(mirage)
       colors.constant = '#FFEE99'
       colors.operator = '#F29668'
       colors.error = '#FF3333'
+      colors.lsp_parameter = '#CB9FF8'
 
       colors.line = '#00010A'
       colors.panel_bg = '#0D1016'
@@ -84,9 +86,7 @@ function colors.generate(mirage)
       colors.vcs_removed = '#D96C75'
 
       colors.vcs_added_bg = '#1D2214'
-      colors.vcs_modified_bg = '#1B2733'
       colors.vcs_removed_bg = '#2D2220'
-      colors.vcs_diff_text = '#363E1C'
 
       colors.fg_idle = '#3E4B59'
       colors.warning = '#FF8F40'
@@ -110,6 +110,7 @@ function colors.generate(mirage)
     colors.constant = '#A37ACC'
     colors.operator = '#ED9366'
     colors.error = '#F51818'
+    colors.lsp_parameter = '#C788CE'
 
     colors.line = '#EFF0F1'
     colors.panel_bg = '#FFFFFF'
@@ -128,9 +129,7 @@ function colors.generate(mirage)
     colors.vcs_removed = '#F27983'
 
     colors.vcs_added_bg = '#E0E7CD'
-    colors.vcs_modified_bg = '#E7E8E9'
     colors.vcs_removed_bg = '#F9EBE4'
-    colors.vcs_diff_text = '#D3E0AF'
 
     colors.fg_idle = '#828C99'
     colors.warning = '#FA8D3E'
